@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import logo from "../Assets/Images/logo.jpeg";
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useDataContext } from "../Context/dataContext";
 import { toast, ToastContainer } from "react-toastify";
@@ -14,7 +13,8 @@ function Register() {
   const [use_lastName, setUse_lastName] = useState("");
   const [use_email, setUse_email] = useState("");
   const [use_password, setUse_password] = useState("");
-  // const [use_phone, setUse_phone] = useState("");
+  const [use_phone, setUse_phone] = useState("");
+  const [use_phonePrefix, setUse_phonePrefix] = useState("+34"); // Default is Spain
   const [use_confirm, setUse_confirm] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +37,8 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const fullPhoneNumber = `${use_phonePrefix} ${use_phone}`; // Combine prefix and phone number
+
     try {
       setLoading(true);
       await axios.post(`${url}/Auth/register`, {
@@ -45,6 +47,7 @@ function Register() {
         use_dni: "",
         use_email,
         use_password,
+        use_phone: fullPhoneNumber, // Save the full phone number with prefix
         use_verif: "N",
         use_img: "",
       });
@@ -113,20 +116,30 @@ function Register() {
             <select
               name="phonePrefix"
               id="phonePrefix"
-              // value={formData.phonePrefix}
-              // onChange={handleChange}
+              value={use_phonePrefix}
+              onChange={(e) => setUse_phonePrefix(e.target.value)}
               className="phone-prefix"
             >
-              <option value="+34">🇪🇸 +34</option>
-              <option value="+1">🇺🇸 +1</option>
+              <option value="+34">🇪🇸  (+34)</option>
+              <option value="+58">🇻🇪 (+58)</option>
+              <option value="+1">🇺🇸 (+1)</option>
+              <option value="+54">🇦🇷  (+54)</option>
+              <option value="+55">🇧🇷  (+55)</option>
+              <option value="+56">🇨🇱  (+56)</option>
+              <option value="+57">🇨🇴  (+57)</option>
+              <option value="+593">🇪🇨  (+593)</option>
+              <option value="+52">🇲🇽  (+52)</option>
+              <option value="+507">🇵🇦  (+507)</option>
+              <option value="+51">🇵🇪  (+51)</option>
             </select>
+
             <input
               type="text"
               name="phone"
               id="phone"
               placeholder="Número de teléfono"
-              // value={formData.phone}
-              // onChange={handleChange}
+              value={use_phone}
+              onChange={(e) => setUse_phone(e.target.value)}
               required
             />
           </div>
@@ -179,7 +192,7 @@ function Register() {
             name="termsAccepted"
             id="termsAccepted"
             checked={termsAccepted}
-            onChange={(e)=> setTermsAccepted(e)}
+            onChange={(e) => setTermsAccepted(e.target.checked)}
             required
           />
           <label htmlFor="termsAccepted">
@@ -200,36 +213,39 @@ function Register() {
         </div>
       </form>
 
-      <Modal isOpen={modalIsOpen} toggle={closeModal} centered>
-        <ModalHeader toggle={closeModal}>Confirmación de Datos</ModalHeader>
-        <ModalBody>
-          <p>
-            <strong>Correo electrónico:</strong> {use_email}
-          </p>
-          <p>
-            <strong>Nombres:</strong> {use_name}
-          </p>
-          <p>
-            <strong>Apellidos:</strong> {use_lastName}
-          </p>
-          <p>
-            <strong>Teléfono:</strong> +58 4246725408
-          </p>
-          <p>
-            <strong>Contraseña:</strong> {use_password}
-          </p>
-        </ModalBody>
-        <ModalFooter>
-          <button className="btn-secondary" onClick={closeModal}>
-            Editar
-          </button>
-          <button className="btn-primary" onClick={handleSubmit}>
-          {loading ? "Enviando..." : "Confirmar"}
-          </button>
-        </ModalFooter>
-      </Modal>
-      <ToastContainer autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      {/* Custom CSS Modal */}
+      {modalIsOpen && (
+        <div className="custom-modal">
+          <div className="custom-modal-content">
+            <h2>Confirmación de Datos</h2>
+            <p>
+              <strong>Correo electrónico:</strong> {use_email}
+            </p>
+            <p>
+              <strong>Nombres:</strong> {use_name}
+            </p>
+            <p>
+              <strong>Apellidos:</strong> {use_lastName}
+            </p>
+            <p>
+              <strong>Teléfono:</strong> {use_phonePrefix} {use_phone}
+            </p>
+            <p>
+              <strong>Contraseña:</strong> {use_password}
+            </p>
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={closeModal}>
+                Editar
+              </button>
+              <button className="btn-primary" onClick={handleSubmit}>
+                {loading ? "Enviando..." : "Confirmar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
+      <ToastContainer autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 }
