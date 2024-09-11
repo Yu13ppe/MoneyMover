@@ -200,9 +200,8 @@ function Changes() {
     fetchDataAccGbp,
   ]);
 
-  return (
-    logged?
-    (<div className="changes">
+  return logged ? (
+    <div className="changes">
       <NavBarUser />
 
       {/* Mensaje de verificación */}
@@ -237,7 +236,7 @@ function Changes() {
         </div>
       )}
 
-      {/* Contenido restante de la página */}
+      {/* Titulo de bienvenida */}
       <div className="changes__header">
         <h1>Bienvenido, {user.use_name}</h1>
         <div className="changes__profile">
@@ -245,6 +244,7 @@ function Changes() {
         </div>
       </div>
 
+      {/* Apartado de saldos disponibles */}
       <div className="changes__balances">
         <div className="balance-item">
           <h3>Saldo en Euros</h3>
@@ -314,6 +314,7 @@ function Changes() {
         </div>
       </div>
 
+      {/* Alternal entre recargar y enviar remesas */}
       <div className="changes__actions">
         <Link to="/recharge">
           {" "}
@@ -325,6 +326,7 @@ function Changes() {
         </Link>
       </div>
 
+      {/* Alterna entre moivimientos de recargas y envios de remesas */}
       <div className="changes__tabs">
         <button
           className={activeTab === "recargar" ? "tab active" : "tab"}
@@ -340,6 +342,7 @@ function Changes() {
         </button>
       </div>
 
+      {/* Lista de movimientos de recargas y envios de remesas */}
       <div className="changes__content">
         {activeTab === "recargar" ? (
           <div className="tab-content">
@@ -396,7 +399,9 @@ function Changes() {
                       ))
                   ) : (
                     <tr>
-                      <td colSpan="5" style={{textAlign: 'center'}}>No hay movimientos para mostrar</td>
+                      <td colSpan="5" style={{ textAlign: "center" }}>
+                        No hay movimientos para mostrar
+                      </td>
                     </tr>
                   )}
                   {/* <tr>
@@ -431,7 +436,7 @@ function Changes() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  {/* <tr>
                     <td>25/08/2024</td>
                     <td>407845</td>
                     <td>Maribel Esther M...</td>
@@ -445,8 +450,46 @@ function Changes() {
                     <td>
                       <FaEye className="view-details-icon" />
                     </td>
-                  </tr>
-                  <tr>
+                  </tr> */}
+                  {userMovemments.length > 0 ? (
+                    userMovemments
+                      .filter((movement) => movement.mov_type === "Retiro")
+                      .map((movement) => (
+                        <tr key={movement.mov_id}>
+                          <td>{movement.mov_date}</td>
+                          <td>0001</td>
+                          <td>Carlos Pérez</td>
+                          <td>
+                            50,00 USD <img src={usaFlag} alt="USD" />
+                          </td>
+                          <td>
+                            {movement.mov_currency === "BS"
+                              ? "Bs"
+                              : movement.mov_currency === "USD"
+                              ? "$"
+                              : "£"}{" "}
+                            {movement.mov_amount}{" "}
+                            {movement.mov_currency === "USD" && (
+                              <img src={usaFlag} alt="USD" />
+                            )}
+                            {movement.mov_currency === "BS" && (
+                              <img src={venezuelaFlag} alt="BS" />
+                            )}
+                          </td>
+                          <td className="completed">Aprobado</td>
+                          <td>
+                            <FaEye className="view-details-icon" />
+                          </td>
+                        </tr>
+                      ))
+                  ) : (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: "center" }}>
+                        No hay movimientos para mostrar
+                      </td>
+                    </tr>
+                  )}
+                  {/* <tr>
                     <td>26/08/2024</td>
                     <td>407846</td>
                     <td>Carlos Pérez</td>
@@ -460,15 +503,15 @@ function Changes() {
                     <td>
                       <FaEye className="view-details-icon" />
                     </td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </div>
           </div>
         )}
       </div>
-    </div>)
-    :
+    </div>
+  ) : (
     "Log In"
   );
 }
