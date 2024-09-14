@@ -22,6 +22,10 @@ function Directory() {
   const [user, setUser] = useState([]);
   const [userDirectory, setUserDirectory] = useState([]);
 
+   // Prefijos para cédula y teléfono
+   const [cedulaPrefix, setCedulaPrefix] = useState('V'); // Valor por defecto "V"
+   const [telefonoPrefix, setTelefonoPrefix] = useState('0414'); // Valor por defecto "0414"
+
   // Fetch de datos del usuario (Incluye directorio)
   const fetchDataUser = useCallback(async () => {
     try {
@@ -32,15 +36,8 @@ function Directory() {
       });
       setUser(response.data);
 
-    } catch (error) {
-      console.log(error);
-    }
-  }, [setUser, infoTkn, url]);
-
-  const fetchDataAccUser = useCallback(async () => {
-    try {
       const responseDirectory = await axios.get(
-        `${url}/AccBsUser/user/${user.use_id}`,
+        `${url}/AccBsUser/user/${response.data.use_id}`,
         {
           headers: {
             Authorization: `Bearer ${infoTkn}`,
@@ -52,10 +49,27 @@ function Directory() {
     } catch (error) {
       console.log(error);
     }
-  }, [setUserDirectory, infoTkn, url, user]);
+  }, [setUser, infoTkn, url]);
+
+  // const fetchDataAccUser = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${url}/AccBsUser/user/${user.use_id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${infoTkn}`,
+  //         },
+  //       }
+  //     );
+  //     setUserDirectory(response.data);
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [setUserDirectory, infoTkn, url, user]);
 
   // Función para alternar abrir y cerrar el modal
-  const toggleModal = () =>{
+  const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
   }
 
@@ -77,9 +91,10 @@ function Directory() {
           accbsUser_bank,
           accbsUser_owner,
           accbsUser_number,
-          accbsUser_dni,
-          accbsUser_phone,
+          accbsUser_dni: cedulaPrefix + accbsUser_dni,
+          accbsUser_phone: telefonoPrefix + accbsUser_phone, 
           accbsUser_type,
+          accbsUser_status : 'activo',
           accbsUser_userId: user.use_id,
         },
         {
@@ -90,6 +105,7 @@ function Directory() {
       );
 
       // Refresh the page after adding account
+      // fetchDataAccUser();
       window.location.reload();
 
       toast.success('Cuenta agregada con éxito!', {
@@ -117,8 +133,7 @@ function Directory() {
 
   useEffect(() => {
     fetchDataUser();
-    fetchDataAccUser();
-  }, [fetchDataUser, fetchDataAccUser]);
+  }, [fetchDataUser]);
 
   return (
     <div className="directorio">
@@ -136,23 +151,23 @@ function Directory() {
 
       <div className="directorio__list">
         {userDirectory.map((beneficiario) => (
-        <div className="beneficiario-card" key={beneficiario.accbsUser_id}>
-          <img src={venezuelaFlag} alt="Venezuela flag" className="flag-icon" />
-          <div className="beneficiario-info">
-            <h3>{beneficiario.accbsUser_owner}</h3>
-            <p>Transferencia bancaria</p>
-            <p>Cédula: {beneficiario.accbsUser_dni}</p>
-            <p>Banco: {beneficiario.accbsUser_bank}</p>
-            <p>Cuenta: {beneficiario.accbsUser_number}</p>
-            <p>Número teléfonico: {beneficiario.accbsUser_phone}</p>
-            <p>{beneficiario.accbsUser_type}</p>
+          <div className="beneficiario-card" key={beneficiario.accbsUser_id}>
+            <img src={venezuelaFlag} alt="Venezuela flag" className="flag-icon" />
+            <div className="beneficiario-info">
+              <h3>{beneficiario.accbsUser_owner}</h3>
+              <p>Transferencia bancaria</p>
+              <p>Cédula: {beneficiario.accbsUser_dni}</p>
+              <p>Banco: {beneficiario.accbsUser_bank}</p>
+              <p>Cuenta: {beneficiario.accbsUser_number}</p>
+              <p>Número teléfonico: {beneficiario.accbsUser_phone}</p>
+              <p>{beneficiario.accbsUser_type}</p>
+            </div>
+            <button className="remesa-button">Envía tu Remesa</button>
+            <span className={`estado `}>
+              Activo
+            </span>
           </div>
-          <button className="remesa-button">Envía tu Remesa</button>
-          <span className={`estado `}>
-            Activo
-          </span>
-        </div>
-      ))}
+        ))}
       </div>
 
       {/* Modal para agregar nuevo beneficiario */}
@@ -163,7 +178,7 @@ function Directory() {
               &times;
             </button>
             <h2>Agregar Nuevo Beneficiario</h2>
-            
+
             {/* Nombre y apellido */}
             <label>Nombre y Apellido</label>
             <input
@@ -176,13 +191,26 @@ function Directory() {
 
             {/* Cédula */}
             <label>Cédula</label>
-            <input
-              type="text"
-              name="cedula"
-              value={accbsUser_dni}
-              onChange={(e) => setAccbsUser_dni(e.target.value)}
-              placeholder="Ingresa la cédula"
-            />
+            <div className="cedula-input">
+              <select
+                name="prefijoCedula"
+                className="cedula-prefix"
+                value={cedulaPrefix}
+                onChange={(e) => setCedulaPrefix(e.target.value)}
+              >
+                <option value="V">V</option>
+                <option value="E">E</option>
+                <option value="J">J</option>
+                <option value="P">P</option>
+              </select>
+              <input
+                type="text"
+                name="cedula"
+                value={accbsUser_dni}
+                onChange={(e) => setAccbsUser_dni(e.target.value)}
+                placeholder="Ingresa la cédula"
+              />
+            </div>
 
             {/* Selección de tipo de transacción */}
             <label>Seleccione el tipo de transacción</label>
@@ -195,14 +223,31 @@ function Directory() {
             {/* Campos dinámicos */}
             {accbsUser_type === 'pagoMovil' && (
               <>
-                <label>Número de Teléfono</label>
-                <input
-                  type="text"
-                  name="telefono"
-                  value={accbsUser_phone}
-                  onChange={(e) => setAccbsUser_phone(e.target.value)}
-                  placeholder="Ingresa el número de teléfono"
-                />
+                {/* Número de Teléfono */}
+                 {/* Número de Teléfono */}
+                 <label>Número de Teléfono</label>
+                <div className="telefono-input">
+                  <select
+                    name="prefijoTelefono"
+                    className="telefono-prefix"
+                    value={telefonoPrefix}
+                    onChange={(e) => setTelefonoPrefix(e.target.value)}
+                  >
+                    <option value="0414">0414</option>
+                    <option value="0424">0424</option>
+                    <option value="0412">0412</option>
+                    <option value="0416">0416</option>
+                    <option value="0426">0426</option>
+                  </select>
+                  <input
+                    type="text"
+                    name="telefono"
+                    value={accbsUser_phone}
+                    onChange={(e) => setAccbsUser_phone(e.target.value)}
+                    placeholder="Ingresa el número telefónico"
+                  />
+                </div>
+
                 <label>Banco</label>
                 <select name="banco" value={accbsUser_bank} onChange={(e) => setAccbsUser_bank(e.target.value)}>
                   <option value="">Selecciona el banco</option>
