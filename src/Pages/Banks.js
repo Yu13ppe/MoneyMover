@@ -6,48 +6,48 @@ import { FaPlus } from "react-icons/fa";
 import { useDataContext } from "../Context/dataContext";
 
 function Banks() {
-  const { logged, infoTkn, url } = useDataContext();
+  const { infoTkn, url } = useDataContext();
 
   const [banksEur, setBanksEUR] = useState([]);
   const [banksUsd, setBanksUSD] = useState([]);
   const [banksGbp, setBanksGBP] = useState([]);
-  const [banksBs, setBanksBS] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [banksBs, setBanksBS] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState("");
 
-  const [admin, setAdmin] = useState([]);
+  // const [admin, setAdmin] = useState([]);
 
-  const [acceur_Bank, setAcceur_Bank] = useState("");
-  const [acceur_owner, setAcceur_owner] = useState("");
-  const [acceur_number, setAcceur_number] = useState("");
-  const [acceur_nie, setAcceur_nie] = useState("");
-  const [acceur_phone, setAcceur_phone] = useState("");
+  // const [acceur_Bank, setAcceur_Bank] = useState("");
+  // const [acceur_owner, setAcceur_owner] = useState("");
+  // const [acceur_number, setAcceur_number] = useState("");
+  // const [acceur_nie, setAcceur_nie] = useState("");
+  // const [acceur_phone, setAcceur_phone] = useState("");
 
-  const [accgbp_Bank, setAccgbp_Bank] = useState("");
-  const [accgbp_owner, setAccgbp_owner] = useState("");
-  const [accgbp_number, setAccgbp_number] = useState("");
-  const [accgbp_Ident, setAccgbp_Ident] = useState("");
-  const [accgbp_phone, setAccgbp_phone] = useState("");
+  // const [accgbp_Bank, setAccgbp_Bank] = useState("");
+  // const [accgbp_owner, setAccgbp_owner] = useState("");
+  // const [accgbp_number, setAccgbp_number] = useState("");
+  // const [accgbp_Ident, setAccgbp_Ident] = useState("");
+  // const [accgbp_phone, setAccgbp_phone] = useState("");
 
-  const [accusd_Bank, setAccusd_Bank] = useState("");
-  const [accusd_owner, setAccusd_owner] = useState("");
-  const [accusd_email, setAccusd_email] = useState("");
-  const [accusd_number, setAccusd_number] = useState("");
-  const [accusd_Ident, setAccusd_Ident] = useState("");
-  const [accusd_phone, setAccusd_phone] = useState("");
+  // const [accusd_Bank, setAccusd_Bank] = useState("");
+  // const [accusd_owner, setAccusd_owner] = useState("");
+  // const [accusd_email, setAccusd_email] = useState("");
+  // const [accusd_number, setAccusd_number] = useState("");
+  // const [accusd_Ident, setAccusd_Ident] = useState("");
+  // const [accusd_phone, setAccusd_phone] = useState("");
 
-  const [accbs_bank, setAccbs_bank] = useState("");
-  const [accbs_owner, setAccbs_owner] = useState("");
-  const [accbs_number, setAccbs_number] = useState("");
-  const [accbs_dni, setAccbs_dni] = useState("");
-  const [accbs_phone, setAccbs_phone] = useState("");
+  // const [accbs_bank, setAccbs_bank] = useState("");
+  // const [accbs_owner, setAccbs_owner] = useState("");
+  // const [accbs_number, setAccbs_number] = useState("");
+  // const [accbs_dni, setAccbs_dni] = useState("");
+  // const [accbs_phone, setAccbs_phone] = useState("");
 
-  const [typeAcc, setTypeAcc] = useState("");
+  // const [typeAcc, setTypeAcc] = useState("");
 
   const filteredBanks = [...banksEur, ...banksUsd, ...banksGbp].filter(
     (Bank) => {
       const fullName =
         `${Bank.acceur_Bank} ${Bank.accusd_Bank} ${Bank.accgbp_Bank}`.toLowerCase();
-      return fullName.includes(searchQuery.toLowerCase());
+      return fullName;
     }
   );
 

@@ -6,7 +6,7 @@ import { useDataContext } from "../Context/dataContext";
 import axios from "axios";
 
 function UsersV() {
-  const { logged, infoTkn, url } = useDataContext();
+  const { infoTkn, url } = useDataContext();
 
   const [users, setUsers] = useState([]);
 

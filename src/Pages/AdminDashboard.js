@@ -9,7 +9,7 @@ import { useDataContext } from "../Context/dataContext";
 import axios from "axios";
 
 function AdminDashboard() {
-  const { logged, infoTkn, url } = useDataContext();
+  const { infoTkn, url } = useDataContext();
   const [activeTab, setActiveTab] = useState("recargas");
   const currentDate = format(new Date(), "dd/MM/yyyy");
 

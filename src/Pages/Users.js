@@ -8,7 +8,7 @@ import { useDataContext } from "../Context/dataContext";
 import axios from "axios";
 
 function Users() {
-  const { logged, infoTkn, url } = useDataContext();
+  const { infoTkn, url } = useDataContext();
 
   //Buscador
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,7 +27,7 @@ function Users() {
   const [use_amountGbp, setAmountGbp] = useState(Number);
 
   const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const [newUserModalOpen, setNewUserModalOpen] = useState(false);
 
   const filteredUsuarios = users.filter((user) => {
@@ -55,10 +55,10 @@ function Users() {
   }, [infoTkn, setUsers, url]);
 
   // Paginación
-  const itemsPerPage = 10;
+  // const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentUsers = users
   //   .filter(
   //     (user) =>
@@ -115,29 +115,29 @@ function Users() {
   };
 
   // Función para añadir un nuevo usuario
-  const [newUser, setNewUser] = useState({
-    nombre: "",
-    apellido: "",
-    dni: "",
-    telefono: "",
-    email: "",
-    saldoEUR: 0,
-    saldoUSD: 0,
-    saldoGBP: 0,
-    use_verif: "E", // Default estado
-  });
+  // const [newUser, setNewUser] = useState({
+  //   nombre: "",
+  //   apellido: "",
+  //   dni: "",
+  //   telefono: "",
+  //   email: "",
+  //   saldoEUR: 0,
+  //   saldoUSD: 0,
+  //   saldoGBP: 0,
+  //   use_verif: "E", // Default estado
+  // });
 
-  const handleNewUserChange = (e) => {
-    const { name, value } = e.target;
-    setNewUser((prev) => ({ ...prev, [name]: value }));
-  };
+  // const handleNewUserChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewUser((prev) => ({ ...prev, [name]: value }));
+  // };
 
-  const handleAddUser = (e) => {
-    e.preventDefault();
-    const userId = users.length + 1;
-    setUsers((prev) => [...prev, { id: userId, ...newUser }]);
-    closeModal();
-  };
+  // const handleAddUser = (e) => {
+  //   e.preventDefault();
+  //   const userId = users.length + 1;
+  //   setUsers((prev) => [...prev, { id: userId, ...newUser }]);
+  //   closeModal();
+  // };
 
   // Función para manejar cambios en el estado de verificación
   const handleUserVerificationChange = (e) => {
@@ -307,7 +307,7 @@ function Users() {
           {/* Paginación */}
           <div className="pagination">
             {Array.from({
-              length: Math.ceil(users.length / itemsPerPage),
+              length: Math.ceil(users.length),
             }).map((_, i) => (
               <button
                 key={i}
