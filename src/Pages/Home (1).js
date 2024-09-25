@@ -43,23 +43,82 @@ function Home() {
   const [receiveCountry, setReceiveCountry] = useState("VEF");
 
   const calculateRemittance = useCallback(() => {
-    if (exchangeRate.length === 0) return; // Asegúrate de que haya datos antes de intentar calcular.
-  
     // Encuentra la tasa de cambio dependiendo de la moneda seleccionada
-    let selectedRate = 1;
-  
-    // Cambios a VEF
+    //Cambios a VEF
     if (sendCountry === "EUR" && receiveCountry === "VEF") {
-      selectedRate = exchangeRate[0].cur_EurToBs;
+      setRate(exchangeRate[0].cur_EurToBs);
     } else if (sendCountry === "USD" && receiveCountry === "VEF") {
-      selectedRate = exchangeRate[0].cur_UsdToBs;
-    } 
-    // Continuar con los otros pares de divisas
-  
-    const result = sendAmount * selectedRate;
+      setRate(exchangeRate[0].cur_UsdToBs);
+    } else if (sendCountry === "GBP" && receiveCountry === "VEF") {
+      setRate(exchangeRate[0].cur_GbpToBs);
+    }
+
+    //Cambios a COP
+    else if (sendCountry === "EUR" && receiveCountry === "COP") {
+      setRate(exchangeRate[0].cur_EurToCol_Pes);
+    } else if (sendCountry === "USD" && receiveCountry === "COP") {
+      setRate(exchangeRate[0].cur_UsdToBs);
+    } else if (sendCountry === "GBP" && receiveCountry === "COP") {
+      setRate(exchangeRate[0].cur_GbpToCol_Pes);
+    }
+
+    //Cambios a ARS
+    else if (sendCountry === "EUR" && receiveCountry === "ARS") {
+      setRate(exchangeRate[0].cur_EurToArg_Pes);
+    } else if (sendCountry === "USD" && receiveCountry === "ARS") {
+      setRate(exchangeRate[0].cur_UsdToCol_Pes);
+    } else if (sendCountry === "GBP" && receiveCountry === "ARS") {
+      setRate(exchangeRate[0].cur_GbpToArg_Pes);
+    }
+
+    //Cambios a PAB
+    else if (sendCountry === "EUR" && receiveCountry === "PAB") {
+      setRate(exchangeRate[0].cur_EurToPar_Gua);
+    } else if (sendCountry === "USD" && receiveCountry === "PAB") {
+      setRate(exchangeRate[0].cur_UsdToPar_Gua);
+    } else if (sendCountry === "GBP" && receiveCountry === "PAB") {
+      setRate(exchangeRate[0].cur_GbpToPar_Gua);
+    }
+
+    //Cambios a BRL
+    else if (sendCountry === "EUR" && receiveCountry === "BRL") {
+      setRate(exchangeRate[0].cur_EurToBra_Rea);
+    } else if (sendCountry === "USD" && receiveCountry === "BRL") {
+      setRate(exchangeRate[0].cur_UsdToBra_Rea);
+    } else if (sendCountry === "GBP" && receiveCountry === "BRL") {
+      setRate(exchangeRate[0].cur_GbpToBra_Rea);
+    }
+
+    //Cambios a PEN
+    else if (sendCountry === "EUR" && receiveCountry === "PEN") {
+      setRate(exchangeRate[0].cur_EurToSol_Pe);
+    } else if (sendCountry === "USD" && receiveCountry === "PEN") {
+      setRate(exchangeRate[0].cur_UsdToSol_Pe);
+    } else if (sendCountry === "GBP" && receiveCountry === "PEN") {
+      setRate(exchangeRate[0].cur_GbpToSol_Pe);
+    }
+
+    //Cambios a CLP
+    else if (sendCountry === "EUR" && receiveCountry === "CLP") {
+      setRate(exchangeRate[0].cur_EurToPes_Ch);
+    } else if (sendCountry === "USD" && receiveCountry === "CLP") {
+      setRate(exchangeRate[0].cur_UsdToPes_Ch);
+    } else if (sendCountry === "GBP" && receiveCountry === "CLP") {
+      setRate(exchangeRate[0].cur_GbpToPes_Ch);
+    }
+
+    //Cambios a USD
+    else if (sendCountry === "EUR" && receiveCountry === "USD_ECU") {
+      setRate(exchangeRate[0].cur_EurToUsd);
+    } else if (sendCountry === "USD" && receiveCountry === "USD_ECU") {
+      setRate(exchangeRate[0].cur_UsdToUsd_Ecu);
+    } else if (sendCountry === "GBP" && receiveCountry === "USD_ECU") {
+      setRate(exchangeRate[0].cur_GbpToUsd);
+    }
+
+    const result = sendAmount * rate;
     setReceiveAmount(result);
-  }, [sendCountry, receiveCountry, sendAmount, exchangeRate]);
-  
+  }, [setReceiveAmount, sendCountry, receiveCountry, sendAmount, exchangeRate, setRate, rate]);
 
   const fetchExchangeRate = useCallback(async () => {
     try {
@@ -69,15 +128,16 @@ function Home() {
         },
       });
       setExchangeRate(response.data);
-      console.log(response.data); // Puedes quitar este console.log si ya no lo necesitas.
+      console.log(response.data);
+      
+      calculateRemittance();
       setLoading(false);
     } catch (error) {
       console.error("Error fetching exchange rate", error);
       setError("Error fetching exchange rate");
       setLoading(false);
     }
-  }, [infoTkn, url]);
-  
+  }, [setExchangeRate, infoTkn, url, calculateRemittance]);
 
   const handleSendCountryChange = (event) => {
     setSendCountry(event.target.value);
@@ -89,17 +149,8 @@ function Home() {
 
   useEffect(() => {
     AOS.init({ duration: 1200 });
-    fetchExchangeRate(); // Solo ejecuta esta función una vez al montar el componente.
-  }, []); // Dependencias vacías para ejecutarlo solo una vez.
-
-  
-  useEffect(() => {
-    if (exchangeRate.length > 0) {
-      calculateRemittance();
-    }
-  }, [sendCountry, receiveCountry, sendAmount, exchangeRate]); 
-  
-
+    fetchExchangeRate();
+  }, [fetchExchangeRate]);
 
   return (
     <div className="home">

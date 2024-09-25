@@ -159,6 +159,235 @@ function Banks() {
     fetchDataGBP();
   }, [fetchDataEUR, fetchDataUSD, fetchDataGBP]);
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   if (typeAcc === "EUR") {
+  //     try {
+  //       await axios.post(
+  //         `${url}/Acceur/create`,
+  //         {
+  //           acceur_Bank,
+  //           acceur_owner,
+  //           acceur_number,
+  //           acceur_nie,
+  //           acceur_phone,
+  //           acceur_type: "Normal",
+  //           acceur_status: "Activo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${infoTkn}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+
+  //   if (typeAcc === "GBP") {
+  //     try {
+  //       await axios.post(
+  //         `${url}/Accgbp/create`,
+  //         {
+  //           accgbp_Bank,
+  //           accgbp_owner,
+  //           accgbp_number,
+  //           accgbp_Ident,
+  //           accgbp_phone,
+  //           accgbp_status: "Activo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${infoTkn}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+
+  //   if (typeAcc === "USD") {
+  //     try {
+  //       await axios.post(
+  //         `${url}/Accusd/create`,
+  //         {
+  //           accusd_Bank,
+  //           accusd_owner,
+  //           accusd_email,
+  //           accusd_number,
+  //           accusd_Ident,
+  //           accusd_phone,
+  //           accusd_type: "Normal",
+  //           accusd_status: "Activo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${infoTkn}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
+  // const handleEdit = async (event) => {
+  //   event.preventDefault();
+
+  //   if (selectModal.acceur_Bank) {
+  //     try {
+  //       await axios.put(
+  //         `${url}/Acceur/${selectModal.acceur_id}`,
+  //         {
+  //           acceur_status:
+  //             selectModal.acceur_status === "Desactivo"
+  //               ? "Activo"
+  //               : "Desactivo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessAdminToken.access_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //       fetchDataBS();
+
+  //       toast.success("¡Datos cambiados con éxito!", {
+  //         position: "bottom-right",
+  //         autoClose: 1000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+
+  //       toggle1();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   if (selectModal.accgbp_Bank) {
+  //     try {
+  //       await axios.put(
+  //         `${url}/Accgbp/${selectModal.accgbp_id}`,
+  //         {
+  //           accgbp_status:
+  //             selectModal.accgbp_status === "Desactivo"
+  //               ? "Activo"
+  //               : "Desactivo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessAdminToken.access_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //       fetchDataBS();
+
+  //       toast.success("¡Datos cambiados con éxito!", {
+  //         position: "bottom-right",
+  //         autoClose: 1000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+
+  //       toggle1();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   if (selectModal.accusd_Bank) {
+  //     try {
+  //       await axios.put(
+  //         `${url}/Accusd/${selectModal.accusd_id}`,
+  //         {
+  //           accusd_status:
+  //             selectModal.accusd_status === "Desactivo"
+  //               ? "Activo"
+  //               : "Desactivo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessAdminToken.access_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //       fetchDataBS();
+
+  //       toast.success("¡Datos cambiados con éxito!", {
+  //         position: "bottom-right",
+  //         autoClose: 1000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+
+  //       toggle1();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   if (selectModal.accbs_bank) {
+  //     try {
+  //       await axios.put(
+  //         `${url}/Accbs/${selectModal.accbs_id}`,
+  //         {
+  //           accbs_status:
+  //             selectModal.accbs_status === "Desactivo" ? "Activo" : "Desactivo",
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${accessAdminToken.access_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       fetchDataEUR();
+  //       fetchDataGBP();
+  //       fetchDataUSD();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
   return (
     <div className="add-banks-dashboard">
       <NavBarAdmin />

@@ -58,7 +58,7 @@ function UsersR() {
               </tr>
             </thead>
             <tbody>
-              {filteredUsuarios.filter((user) => user.use_verif === "R").map((user, index) => (
+              {filteredUsuarios.filter((user) => user.use_verif === "N").map((user, index) => (
                 <tr key={user.use_id}>
                   <td>{index+1}</td>
                   <td>
