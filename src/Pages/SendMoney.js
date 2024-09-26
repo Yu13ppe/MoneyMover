@@ -6,9 +6,11 @@ import { StepTracker } from "../Components/StepTracker"; // Importación del com
 import { toast, ToastContainer } from "react-toastify";
 import { useDataContext } from "../Context/dataContext";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function SendMoney() {
   const { logged, infoTkn, url } = useDataContext();
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
 
   const [step, setStep] = useState(1); // Controla los pasos del formulario
@@ -303,15 +305,15 @@ function SendMoney() {
     // }
     formDataUser.append(
       "use_amountUsd",
-      payment === "USD" ? user.use_amountUsd - sendAmount : user.use_amountUsd
+      payment === "USD" ? user.use_amountUsd - amount : user.use_amountUsd
     );
     formDataUser.append(
       "use_amountGbp",
-      payment === "GBP" ? user.use_amountGbp - sendAmount : user.use_amountGbp
+      payment === "GBP" ? user.use_amountGbp - amount : user.use_amountGbp
     );
     formDataUser.append(
       "use_amountEur",
-      payment === "EUR" ? user.use_amountEur - sendAmount : user.use_amountEur
+      payment === "EUR" ? user.use_amountEur - amount : user.use_amountEur
     );
 
     try {
@@ -346,6 +348,7 @@ function SendMoney() {
         }
       );
 
+      history.push('/changes')
       console.log("Request sent successfully");
     } catch (error) {
       console.error("Error:", error);
