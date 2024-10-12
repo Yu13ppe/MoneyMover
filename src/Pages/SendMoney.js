@@ -280,6 +280,8 @@ function SendMoney() {
     formData.append("mov_accUsdId", payment === "USD" ? 99 : 0);
     formData.append("mov_accGbpId", payment === "GBP" ? 99 : 0);
     formData.append("mov_userId", user.use_id);
+    formData.append("mov_accBsUserId", selectedBeneficiary.accbsUser_id);
+    
 
     const formDataUser = new FormData();
     // if (sendOption === "Efectivo") {
